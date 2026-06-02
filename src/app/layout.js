@@ -14,15 +14,29 @@ const inter = Inter({
 });
 
 export const metadata = {
+  metadataBase: new URL('https://www.ashwinpadwalkar.com'),
   title: "Ashwin Padwalkar — Cinematographer & Video Editor",
   description:
-    "Professional cinematographer and video editor specializing in documentaries, podcasts, reels, and brand films. Bringing stories to life through visuals.",
+    "Cinematographer and video editor from India. Documentaries, music videos, podcasts, and brand films — 4+ years turning stories into stunning visuals.",
   keywords:
-    "video editor, cinematographer, filmmaker, documentary, podcast, reels, motion graphics, India",
+    "Ashwin Padwalkar, cinematographer, video editor, filmmaker, documentary, podcast, reels, music video, Karwar, India",
+  authors: [{ name: "Ashwin Padwalkar" }],
+  creator: "Ashwin Padwalkar",
   openGraph: {
     title: "Ashwin Padwalkar — Cinematographer & Video Editor",
-    description: "Bringing stories to life through visuals.",
+    description:
+      "Cinematographer and video editor from India. Documentaries, music videos, podcasts, and brand films — 4+ years turning stories into stunning visuals.",
+    url: "https://www.ashwinpadwalkar.com",
     type: "website",
+    locale: "en_IN",
+    siteName: "Ashwin Padwalkar Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ashwin Padwalkar — Cinematographer & Video Editor",
+    description:
+      "Cinematographer and video editor from India. Documentaries, music videos, podcasts, and brand films.",
+    creator: "@ash_pdwlkr",
   },
 };
 
