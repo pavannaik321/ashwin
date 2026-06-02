@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 const SOCIALS = [
@@ -118,24 +119,26 @@ export default function About() {
                 </div>
               </div>
 
-              {/* Center Portrait Overlay */}
-              <div className="relative aspect-[3/4] mt-4 bg-black overflow-hidden border border-white/10 flex items-center justify-center">
-                <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-zinc-950 flex flex-col items-center justify-center p-6 text-center">
-                  <div className="w-20 h-20 rounded-full border-2 border-white/10 flex items-center justify-center mb-4 relative overflow-hidden group-hover:border-[#ff1e27] transition-colors">
-                    {/* Retro Camera SVG inside avatar */}
-                    <svg className="w-8 h-8 text-[#ff1e27]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.069A1 1 0 0121 8.874v6.252a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <span className="text-white font-black text-sm uppercase tracking-widest">
-                    ASHWIN PADWALKAR
-                  </span>
-                  <span className="text-[#ff1e27] font-mono text-[9px] uppercase tracking-widest mt-1">
-                    [ CINEMATOGRAPHER ]
-                  </span>
-                </div>
-                <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-[#ff1e27] text-white text-[8px] font-mono tracking-widest font-black rounded-sm animate-pulse">
+              {/* Center Portrait */}
+              <div className="relative aspect-[3/4] mt-4 bg-black overflow-hidden border border-white/10">
+                <Image
+                  src="/ashwin-portrait.png"
+                  alt="Ashwin Padwalkar — Cinematographer"
+                  fill
+                  className="object-cover object-top"
+                  sizes="(max-width: 768px) 100vw, 400px"
+                  priority
+                />
+                {/* CRT scanline overlay */}
+                <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px)' }} />
+                {/* LIVE FEED badge */}
+                <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-[#ff1e27] text-white text-[8px] font-mono tracking-widest font-black rounded-sm animate-pulse z-10">
                   LIVE FEED
+                </div>
+                {/* Lower third name bar */}
+                <div className="absolute bottom-0 left-0 right-0 bg-black/70 backdrop-blur-sm px-3 py-2 z-10">
+                  <span className="text-white font-black text-[11px] uppercase tracking-widest block">ASHWIN PADWALKAR</span>
+                  <span className="text-[#ff1e27] font-mono text-[8px] uppercase tracking-widest">[ CINEMATOGRAPHER ]</span>
                 </div>
               </div>
             </div>
