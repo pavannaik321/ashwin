@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const SOCIALS = [
   {
@@ -20,7 +20,9 @@ const SOCIALS = [
 ];
 
 export default function About() {
-  const ref = useRef(null);
+  const sectionRef = useRef(null);
+  const [activeTab, setActiveTab] = useState('story');
+  const [clapped, setClapped] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -31,127 +33,233 @@ export default function About() {
           .forEach((el) => el.classList.add('visible'));
         observer.disconnect();
       },
-      { threshold: 0.12 }
+      { threshold: 0.1 }
     );
-    if (ref.current) observer.observe(ref.current);
+    if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
+  const triggerClap = () => {
+    setClapped(true);
+    setTimeout(() => setClapped(false), 300);
+  };
+
   return (
-    <section id="about" ref={ref} className="py-24 md:py-36 bg-[#080808] overflow-hidden">
+    <section id="about" ref={sectionRef} className="py-24 md:py-36 bg-[#09090b] overflow-hidden border-t-2 border-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         {/* Header */}
         <div className="flex items-center gap-4 mb-20 reveal">
-          <div className="w-8 h-px bg-[#D4A853]" />
-          <span className="text-[#D4A853] text-[11px] tracking-[0.5em] uppercase">About Me</span>
+          <div className="w-8 h-0.5 bg-[#ff1e27]" />
+          <span className="text-[#ff1e27] text-xs font-black tracking-[0.4em] uppercase">About The Director</span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-28 items-center">
-          {/* Photo frame */}
-          <div className="reveal-left relative">
-            <div className="relative aspect-[3/4] bg-[#111] max-w-sm lg:max-w-none overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] via-[#111] to-[#080808] flex items-center justify-center">
-                {/* Avatar placeholder */}
-                <div className="text-center select-none">
-                  <div className="w-24 h-24 rounded-full border border-[#D4A853]/20 flex items-center justify-center mx-auto mb-3">
-                    <svg
-                      className="w-10 h-10 text-[#D4A853]/25"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1}
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      />
-                    </svg>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
+          {/* Photo frame: Interactive Clapperboard */}
+          <div className="lg:col-span-5 reveal-left relative flex flex-col items-center">
+            {/* Clapperboard Container */}
+            <div
+              className="relative w-full max-w-sm bg-black border-2 border-white rounded-md p-4 shadow-[6px_6px_0px_#ff1e27] group select-none cursor-pointer"
+              onClick={triggerClap}
+            >
+              {/* Clapper Top Bar */}
+              <div
+                className={`w-full h-8 bg-black border-b-2 border-white flex relative overflow-hidden origin-bottom-left transition-transform duration-200 ${
+                  clapped
+                    ? 'rotate-0'
+                    : 'rotate-[-12deg] group-hover:rotate-[-4deg]'
+                }`}
+                style={{ marginBottom: '4px' }}
+              >
+                {/* Diagonal stripes */}
+                <div
+                  className="w-full h-full bg-black"
+                  style={{
+                    backgroundImage: 'repeating-linear-gradient(45deg, #fff, #fff 10px, #000 10px, #000 20px)',
+                  }}
+                />
+              </div>
+
+              {/* Clapper Hinge Joint */}
+              <div className="absolute top-9 left-1 w-3 h-3 rounded-full bg-white border border-black z-20" />
+
+              {/* Clapper Slate Body */}
+              <div className="bg-[#18181b] border-2 border-white p-3 font-mono text-[10px] text-white/90 space-y-2">
+                <div className="grid grid-cols-2 gap-2 border-b border-white/20 pb-2">
+                  <div>
+                    <span className="text-white/40 block text-[8px] uppercase">PRODUCTION</span>
+                    <span className="font-bold text-[#ff1e27]">ASHWIN.PORTFOLIO</span>
                   </div>
-                  <p className="text-[#333] text-[10px] tracking-[0.4em] uppercase">
-                    Ashwin Padwalkar
-                  </p>
+                  <div>
+                    <span className="text-white/40 block text-[8px] uppercase">ROLL</span>
+                    <span className="font-bold">2024 / EXP</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2 border-b border-white/20 pb-2">
+                  <div className="col-span-2">
+                    <span className="text-white/40 block text-[8px] uppercase">SCENE</span>
+                    <span className="font-bold text-white">01 (ABOUT ME)</span>
+                  </div>
+                  <div>
+                    <span className="text-white/40 block text-[8px] uppercase">TAKE</span>
+                    <span className="font-bold">04</span>
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <div>
+                    <span className="text-white/40 text-[8px] uppercase mr-2">DIRECTOR:</span>
+                    <span className="font-bold">ASHWIN PADWALKAR</span>
+                  </div>
+                  <div>
+                    <span className="text-white/40 text-[8px] uppercase mr-2">CAMERA:</span>
+                    <span className="font-bold text-[#ff1e27]">RED / BLACKMAGIC / SONY</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Corner accents */}
-              {[
-                'top-0 left-0 border-t-2 border-l-2',
-                'top-0 right-0 border-t-2 border-r-2',
-                'bottom-0 left-0 border-b-2 border-l-2',
-                'bottom-0 right-0 border-b-2 border-r-2',
-              ].map((cls, i) => (
-                <div key={i} className={`absolute w-8 h-8 border-[#D4A853] ${cls}`} />
-              ))}
-              {/* Inner border */}
-              <div className="absolute inset-2 border border-[#D4A853]/10 pointer-events-none" />
+              {/* Center Portrait Overlay */}
+              <div className="relative aspect-[3/4] mt-4 bg-black overflow-hidden border border-white/10 flex items-center justify-center">
+                <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-zinc-950 flex flex-col items-center justify-center p-6 text-center">
+                  <div className="w-20 h-20 rounded-full border-2 border-white/10 flex items-center justify-center mb-4 relative overflow-hidden group-hover:border-[#ff1e27] transition-colors">
+                    {/* Retro Camera SVG inside avatar */}
+                    <svg className="w-8 h-8 text-[#ff1e27]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.069A1 1 0 0121 8.874v6.252a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <span className="text-white font-black text-sm uppercase tracking-widest">
+                    ASHWIN PADWALKAR
+                  </span>
+                  <span className="text-[#ff1e27] font-mono text-[9px] uppercase tracking-widest mt-1">
+                    [ CINEMATOGRAPHER ]
+                  </span>
+                </div>
+                <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-[#ff1e27] text-white text-[8px] font-mono tracking-widest font-black rounded-sm animate-pulse">
+                  LIVE FEED
+                </div>
+              </div>
             </div>
 
-            {/* Floating stat badge */}
-            <div className="absolute -bottom-5 -right-5 bg-[#D4A853] px-6 py-4 hidden lg:block z-10">
-              <p
-                className="text-[#080808] font-bold text-2xl leading-none"
-                style={{ fontFamily: 'var(--font-playfair)' }}
-              >
-                4+
-              </p>
-              <p className="text-[#080808]/70 text-[10px] tracking-widest uppercase mt-1">
-                Years Exp.
-              </p>
+            {/* Rotating Exp badge */}
+            <div className="absolute -bottom-6 -right-4 bg-[#ff1e27] text-white border-2 border-white px-5 py-3 shadow-[4px_4px_0px_#fff] hidden lg:block z-10 hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#fff] transition-all">
+              <p className="font-mono text-2xl font-black leading-none">4+</p>
+              <p className="text-[9px] tracking-widest uppercase font-bold mt-1">YEARS EXP.</p>
             </div>
           </div>
 
-          {/* Text content */}
-          <div className="reveal-right">
+          {/* Text content & Tabs */}
+          <div className="lg:col-span-7 reveal-right">
+            {/* Heading */}
             <h2
-              className="font-bold text-[#F0EDE8] leading-tight mb-6"
+              className="font-black text-white leading-tight mb-6"
               style={{
-                fontFamily: 'var(--font-playfair)',
+                fontFamily: 'var(--font-inter)',
                 fontSize: 'clamp(2.2rem, 4.5vw, 3.6rem)',
               }}
             >
-              Turning Ideas Into{' '}
-              <span className="text-gold-gradient">Visual Stories</span>
+              TURNING IDEAS INTO{' '}
+              <span className="text-[#ff1e27] underline decoration-white decoration-4 underline-offset-4">VISUAL STORIES</span>
             </h2>
 
-            <div className="w-12 h-px bg-[#D4A853] mb-8" />
+            {/* Playful Interactive Tabs navigation */}
+            <div className="flex gap-2 border-b-2 border-white/10 pb-4 mb-8">
+              {[
+                { id: 'story', label: 'THE STORY' },
+                { id: 'gear', label: 'GEAR SUITE' },
+                { id: 'philosophy', label: 'PHILOSOPHY' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-4 py-2 font-mono text-xs tracking-wider font-bold transition-all ${
+                    activeTab === tab.id
+                      ? 'bg-[#ff1e27] text-white border-2 border-white shadow-[2px_2px_0px_#fff]'
+                      : 'text-white/60 hover:text-white border border-transparent'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
 
-            <p className="text-[#777] leading-relaxed mb-5 text-sm md:text-[15px]">
-              I&apos;m a passionate cinematographer and video editor who loves bringing stories to
-              life through visuals. Over 4+ years I&apos;ve worked across documentaries, podcasts,
-              brand films, and social media content — crafting narratives that connect with
-              audiences on a deeper level.
-            </p>
-            <p className="text-[#777] leading-relaxed mb-10 text-sm md:text-[15px]">
-              From the first frame to the final cut, I manage the complete creative journey,
-              blending technical precision with artistic vision to deliver work that doesn&apos;t
-              just look good — it{' '}
-              <em className="text-[#D4A853] not-italic font-medium">feels</em> right.
-            </p>
+            {/* Tab content rendering */}
+            <div className="min-h-[160px]">
+              {activeTab === 'story' && (
+                <div className="space-y-4 animate-[fadeInUp_0.4s_ease-out]">
+                  <p className="text-zinc-300 leading-relaxed text-sm md:text-[15px]">
+                    I&apos;m a cinematographer and video editor who lives to capture stories that hit audiences right in the chest. Over the past 4+ years, I&apos;ve operated across documentaries, fast-paced brand films, podcasts, and high-energy social media reels.
+                  </p>
+                  <p className="text-zinc-300 leading-relaxed text-sm md:text-[15px]">
+                    I control the entire creative pipeline. From raw lighting setup and camera movement, to precision cutting, sound design, and grade, I ensure every single frame serves a central emotional goal.
+                  </p>
+                </div>
+              )}
 
-            {/* Mini stats */}
-            <div className="grid grid-cols-2 gap-4 mb-10">
+              {activeTab === 'gear' && (
+                <div className="grid grid-cols-2 gap-4 animate-[fadeInUp_0.4s_ease-out] font-mono text-xs">
+                  <div className="border border-white/10 p-3 bg-zinc-900/40">
+                    <span className="text-[#ff1e27] block font-black uppercase text-[10px] mb-1">// CAMERAS</span>
+                    <ul className="text-zinc-400 space-y-1 list-inside list-disc">
+                      <li>Sony FX6 / FX3 Cinema</li>
+                      <li>Blackmagic Pocket 6K Pro</li>
+                      <li>DJI Mavic 3 Cine (Aerial)</li>
+                    </ul>
+                  </div>
+                  <div className="border border-white/10 p-3 bg-zinc-900/40">
+                    <span className="text-[#ff1e27] block font-black uppercase text-[10px] mb-1">// GLASS / LENSES</span>
+                    <ul className="text-zinc-400 space-y-1 list-inside list-disc">
+                      <li>Sirui Anamorphic Set</li>
+                      <li>Sigma Art 18-35mm &amp; 50-100mm</li>
+                      <li>Sony GM Prime Lenses</li>
+                    </ul>
+                  </div>
+                  <div className="border border-white/10 p-3 bg-zinc-900/40 col-span-2">
+                    <span className="text-[#ff1e27] block font-black uppercase text-[10px] mb-1">// EDITING STATION</span>
+                    <p className="text-zinc-400">
+                      Mac Studio M2 Ultra / Dual 4K Monitors / DaVinci Resolve Speed Editor / Premiere workflow setup.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'philosophy' && (
+                <div className="space-y-4 animate-[fadeInUp_0.4s_ease-out]">
+                  <div className="border-l-4 border-[#ff1e27] pl-4">
+                    <h4 className="font-bold text-white text-sm uppercase mb-1">STORY IS KING</h4>
+                    <p className="text-zinc-400 text-xs leading-relaxed">
+                      A beautiful frame that doesn&apos;t serve the character is just empty decoration. Everything starts with the story.
+                    </p>
+                  </div>
+                  <div className="border-l-4 border-[#ff1e27] pl-4">
+                    <h4 className="font-bold text-white text-sm uppercase mb-1">RHYTHM AND SPEED</h4>
+                    <p className="text-zinc-400 text-xs leading-relaxed">
+                      Editing is like composition. A great cut is a beat of drums. I mix slow cinematic pacing with sudden high-energy beats to hook modern attention.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Mini stats using neo-brutalist cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-10">
               {[
                 { num: '50+', label: 'Projects Completed' },
                 { num: '30+', label: 'Happy Clients' },
                 { num: '6+', label: 'Services Offered' },
-                { num: '∞', label: 'Stories to Tell' },
+                { num: '∞', label: 'RAW Passion' },
               ].map((s) => (
-                <div key={s.label} className="border border-[#1f1f1f] p-4 hover:border-[#D4A853]/30 transition-colors duration-300">
-                  <div
-                    className="text-2xl font-bold text-[#D4A853] mb-1"
-                    style={{ fontFamily: 'var(--font-playfair)' }}
-                  >
+                <div key={s.label} className="border-2 border-white p-4 shadow-[4px_4px_0px_#ff1e27] bg-[#18181b] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#ff1e27] transition-all">
+                  <div className="text-2xl font-black text-white mb-1">
                     {s.num}
                   </div>
-                  <div className="text-[#555] text-[10px] tracking-widest uppercase">{s.label}</div>
+                  <div className="text-[#ff1e27] font-mono text-[9px] tracking-wider uppercase font-bold">{s.label}</div>
                 </div>
               ))}
             </div>
 
             {/* Socials */}
-            <div className="flex items-center gap-5">
-              <span className="text-[#444] text-[11px] tracking-[0.25em] uppercase">Follow</span>
+            <div className="flex items-center gap-5 mt-10">
+              <span className="text-[#a1a1aa] font-mono text-xs uppercase font-bold">CONNECT</span>
               {SOCIALS.map((s) => (
                 <a
                   key={s.name}
@@ -159,7 +267,7 @@ export default function About() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.name}
-                  className="text-[#444] hover:text-[#D4A853] transition-colors duration-300"
+                  className="text-white hover:text-[#ff1e27] transition-colors"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                     <path d={s.path} />

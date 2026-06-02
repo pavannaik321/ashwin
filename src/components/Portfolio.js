@@ -7,82 +7,95 @@ const PROJECTS = [
     title: 'The Sound of Silence',
     category: 'documentary',
     year: '2023',
-    desc: 'A feature documentary on musicians in rural India',
-    bg: 'from-[#1c0e0e] to-[#2e1414]',
-    accent: '#C0392B',
+    inTime: '00:00:15:00',
+    duration: '03:40',
+    desc: 'A feature documentary highlighting grassroots musicians in rural India',
+    bg: '#ff1e27',
+    accentColor: '#ffffff',
   },
   {
     id: 2,
     title: 'Urban Chronicles',
     category: 'documentary',
     year: '2023',
-    desc: 'Documentary series on city life and urban culture',
-    bg: 'from-[#0e1c1a] to-[#142e2a]',
-    accent: '#16A085',
-  },
-  {
-    id: 3,
-    title: 'Tech Talk Podcast',
-    category: 'podcast',
-    year: '2023',
-    desc: 'Visual production for a leading technology podcast',
-    bg: 'from-[#0e0e1c] to-[#14142e]',
-    accent: '#7C5CBF',
-  },
-  {
-    id: 4,
-    title: 'The Creator Podcast',
-    category: 'podcast',
-    year: '2022',
-    desc: 'Monthly series spotlighting creative professionals',
-    bg: 'from-[#1c180e] to-[#2e2614]',
-    accent: '#D4A853',
-  },
-  {
-    id: 5,
-    title: 'FitLife Campaign',
-    category: 'reels',
-    year: '2024',
-    desc: 'High-energy fitness brand reels for social media',
-    bg: 'from-[#0e1c0e] to-[#142e14]',
-    accent: '#27AE60',
-  },
-  {
-    id: 6,
-    title: 'Travel Diaries',
-    category: 'reels',
-    year: '2023',
-    desc: 'Cinematic travel reels across destinations in India',
-    bg: 'from-[#1c160e] to-[#2e220e]',
-    accent: '#E67E22',
-  },
-  {
-    id: 7,
-    title: 'Product Launch Reel',
-    category: 'reels',
-    year: '2024',
-    desc: 'Premium product showcase for an e-commerce brand',
-    bg: 'from-[#1c0e16] to-[#2e1424]',
-    accent: '#D91E8C',
+    inTime: '00:04:12:00',
+    duration: '05:22',
+    desc: 'Deep-dive documentary series exploring city night-life and street culture',
+    bg: '#18181b',
+    accentColor: '#ff1e27',
   },
   {
     id: 8,
     title: 'Startup Story',
     category: 'documentary',
     year: '2024',
-    desc: 'Corporate documentary on a tech startup journey',
-    bg: 'from-[#0e1518] to-[#142028]',
-    accent: '#2980B9',
+    inTime: '00:09:40:00',
+    duration: '04:10',
+    desc: 'Corporate documentary highlighting a tech startup scaling journey',
+    bg: '#27272a',
+    accentColor: '#ffffff',
+  },
+  {
+    id: 3,
+    title: 'Tech Talk Podcast',
+    category: 'podcast',
+    year: '2023',
+    inTime: '00:01:05:00',
+    duration: '12:30',
+    desc: 'Visual setup and multicam production editing for a leading tech show',
+    bg: '#ff1e27',
+    accentColor: '#ffffff',
+  },
+  {
+    id: 4,
+    title: 'The Creator Podcast',
+    category: 'podcast',
+    year: '2022',
+    inTime: '00:14:20:00',
+    duration: '08:45',
+    desc: 'Monthly series spotlighting creative professionals across visual arts',
+    bg: '#18181b',
+    accentColor: '#ff1e27',
+  },
+  {
+    id: 5,
+    title: 'FitLife Campaign',
+    category: 'reels',
+    year: '2024',
+    inTime: '00:00:30:00',
+    duration: '00:30',
+    desc: 'High-energy, fast-paced fitness brand reels optimized for Instagram',
+    bg: '#27272a',
+    accentColor: '#ffffff',
+  },
+  {
+    id: 6,
+    title: 'Travel Diaries',
+    category: 'reels',
+    year: '2023',
+    inTime: '00:01:10:00',
+    duration: '01:00',
+    desc: 'Cinematic color graded travel cuts across various landscapes of India',
+    bg: '#ff1e27',
+    accentColor: '#ffffff',
+  },
+  {
+    id: 7,
+    title: 'Product Launch Reel',
+    category: 'reels',
+    year: '2024',
+    inTime: '00:02:25:00',
+    duration: '00:45',
+    desc: 'Premium sleek product commercial reel with motion typography overlays',
+    bg: '#18181b',
+    accentColor: '#ff1e27',
   },
 ];
 
-const FILTERS = ['all', 'documentary', 'podcast', 'reels'];
-
 export default function Portfolio() {
-  const [active, setActive] = useState('all');
+  const [selectedProj, setSelectedProj] = useState(PROJECTS[0]);
+  const [isPlayingPreview, setIsPlayingPreview] = useState(false);
   const ref = useRef(null);
-
-  const filtered = active === 'all' ? PROJECTS : PROJECTS.filter((p) => p.category === active);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -99,141 +112,226 @@ export default function Portfolio() {
     return () => observer.disconnect();
   }, []);
 
+  const selectProject = (proj) => {
+    setSelectedProj(proj);
+    setIsPlayingPreview(false);
+  };
+
+  const getProjectsByCat = (cat) => PROJECTS.filter((p) => p.category === cat);
+
   return (
-    <section id="work" ref={ref} className="py-24 md:py-36 bg-[#0a0a0a]">
+    <section id="work" ref={ref} className="py-24 md:py-36 bg-[#09090b] border-t-2 border-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         {/* Header row */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <div>
             <div className="flex items-center gap-4 mb-4 reveal">
-              <div className="w-8 h-px bg-[#D4A853]" />
-              <span className="text-[#D4A853] text-[11px] tracking-[0.5em] uppercase">Portfolio</span>
+              <div className="w-8 h-0.5 bg-[#ff1e27]" />
+              <span className="text-[#ff1e27] text-xs font-black tracking-[0.4em] uppercase">TIMELINE PORTFOLIO</span>
             </div>
             <h2
-              className="font-bold text-[#F0EDE8] leading-tight reveal"
+              className="font-black text-white leading-tight reveal"
               style={{
-                fontFamily: 'var(--font-playfair)',
+                fontFamily: 'var(--font-inter)',
                 fontSize: 'clamp(2rem, 4.5vw, 3.4rem)',
               }}
             >
-              Selected <span className="text-gold-gradient">Work</span>
+              SELECTED <span className="text-[#ff1e27] underline decoration-white decoration-4 underline-offset-2">CREATIVE WORK</span>
             </h2>
           </div>
+          <p className="text-zinc-500 text-xs font-mono max-w-xs hidden lg:block reveal leading-relaxed">
+            Click on any color block clip inside the editor timeline tracks (V2, V1, A1) to play and review its project specs.
+          </p>
+        </div>
 
-          {/* Filters */}
-          <div className="flex flex-wrap gap-2 reveal">
-            {FILTERS.map((f) => (
-              <button
-                key={f}
-                onClick={() => setActive(f)}
-                className={`px-5 py-2 text-[11px] tracking-[0.2em] uppercase transition-all duration-300 ${
-                  active === f
-                    ? 'bg-[#D4A853] text-[#080808]'
-                    : 'border border-[#2a2a2a] text-[#555] hover:border-[#D4A853]/50 hover:text-[#D4A853]'
-                }`}
-              >
-                {f}
-              </button>
-            ))}
+        {/* Timeline Editor Board */}
+        <div className="reveal border-2 border-white rounded-md bg-[#000] p-4 shadow-[6px_6px_0px_#ff1e27] overflow-hidden mb-10 select-none">
+          {/* Timeline Header (Time rulers) */}
+          <div className="flex border-b border-white/20 pb-3 mb-4 items-center justify-between font-mono text-[9px] text-zinc-500 overflow-x-auto whitespace-nowrap">
+            <div className="w-28 flex-shrink-0 text-white font-black">TRACK NAME</div>
+            <div className="flex justify-between w-full px-4 gap-12">
+              <span>00:00:00</span>
+              <span>00:02:00</span>
+              <span>00:04:00</span>
+              <span>00:06:00</span>
+              <span>00:08:00</span>
+              <span>00:10:00</span>
+              <span>00:12:00</span>
+              <span>00:14:00</span>
+            </div>
+          </div>
+
+          {/* Timeline Tracks container */}
+          <div className="relative space-y-3">
+            {/* Playhead line (Red vertical marker line) */}
+            <div className="absolute top-0 bottom-0 left-[45%] w-0.5 bg-[#ff1e27] z-20 pointer-events-none hidden md:block">
+              <div className="w-2.5 h-2.5 bg-[#ff1e27] border border-white rotate-45 transform translate-x-[-4px] translate-y-[-4px]" />
+              <div className="absolute top-full transform translate-x-[-50%] mt-1 text-[8px] bg-black text-[#ff1e27] px-1 border border-[#ff1e27] rounded-sm font-mono font-bold whitespace-nowrap">
+                PLAYHEAD
+              </div>
+            </div>
+
+            {/* TRACK V2: Podcasts */}
+            <div className="flex items-center gap-3">
+              <div className="w-28 flex-shrink-0 font-mono text-[10px] font-bold text-white border border-white/20 p-2 bg-zinc-900/60 rounded-sm flex items-center justify-between">
+                <span>V2 [Podcasts]</span>
+                <span className="text-[#ff1e27]">●</span>
+              </div>
+              <div className="flex gap-2 w-full overflow-x-auto py-1 scrollbar-thin">
+                {getProjectsByCat('podcast').map((proj) => {
+                  const isSelected = selectedProj.id === proj.id;
+                  return (
+                    <div
+                      key={proj.id}
+                      onClick={() => selectProject(proj)}
+                      className={`h-11 px-4 border-2 flex flex-col justify-center rounded-sm cursor-none transition-all duration-200 min-w-[200px] flex-1 ${
+                        isSelected
+                          ? 'border-[#ff1e27] bg-[#ff1e27] text-white shadow-md'
+                          : 'border-white bg-[#18181b] text-white/70 hover:border-[#ff1e27] hover:text-white'
+                      }`}
+                    >
+                      <span className="text-[10px] font-black uppercase truncate leading-none mb-1">{proj.title}</span>
+                      <span className="text-[8px] font-mono opacity-60 leading-none">IN: {proj.inTime}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* TRACK V1: Documentary */}
+            <div className="flex items-center gap-3">
+              <div className="w-28 flex-shrink-0 font-mono text-[10px] font-bold text-white border border-white/20 p-2 bg-zinc-900/60 rounded-sm flex items-center justify-between">
+                <span>V1 [Documentary]</span>
+                <span className="text-white">●</span>
+              </div>
+              <div className="flex gap-2 w-full overflow-x-auto py-1 scrollbar-thin">
+                {getProjectsByCat('documentary').map((proj) => {
+                  const isSelected = selectedProj.id === proj.id;
+                  return (
+                    <div
+                      key={proj.id}
+                      onClick={() => selectProject(proj)}
+                      className={`h-11 px-4 border-2 flex flex-col justify-center rounded-sm cursor-none transition-all duration-200 min-w-[180px] flex-1 ${
+                        isSelected
+                          ? 'border-white bg-white text-black shadow-md'
+                          : 'border-white bg-[#18181b] text-white/70 hover:border-[#ff1e27] hover:text-white'
+                      }`}
+                    >
+                      <span className="text-[10px] font-black uppercase truncate leading-none mb-1">{proj.title}</span>
+                      <span className="text-[8px] font-mono opacity-60 leading-none">IN: {proj.inTime}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* TRACK A1: Social/Reels */}
+            <div className="flex items-center gap-3">
+              <div className="w-28 flex-shrink-0 font-mono text-[10px] font-bold text-white border border-white/20 p-2 bg-zinc-900/60 rounded-sm flex items-center justify-between">
+                <span>A1 [Reels/Audio]</span>
+                <span className="text-zinc-500">●</span>
+              </div>
+              <div className="flex gap-2 w-full overflow-x-auto py-1 scrollbar-thin">
+                {getProjectsByCat('reels').map((proj) => {
+                  const isSelected = selectedProj.id === proj.id;
+                  return (
+                    <div
+                      key={proj.id}
+                      onClick={() => selectProject(proj)}
+                      className={`h-11 px-4 border-2 flex flex-col justify-center rounded-sm cursor-none transition-all duration-200 min-w-[150px] flex-1 ${
+                        isSelected
+                          ? 'border-[#ff1e27] bg-transparent text-[#ff1e27] shadow-md border-dashed'
+                          : 'border-white bg-[#18181b] text-white/70 hover:border-[#ff1e27] hover:text-white'
+                      }`}
+                    >
+                      <span className="text-[10px] font-black uppercase truncate leading-none mb-1">{proj.title}</span>
+                      <span className="text-[8px] font-mono opacity-60 leading-none">IN: {proj.inTime}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          {filtered.map((project) => (
-            <a
-              key={project.id}
-              href="https://www.youtube.com/@AshwinPadwalkar"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="portfolio-card reveal block group"
-            >
-              {/* Visual */}
-              <div className={`relative aspect-[4/3] bg-gradient-to-br ${project.bg} overflow-hidden`}>
-                <div className="card-thumb absolute inset-0">
-                  {/* Accent glow */}
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      background: `radial-gradient(ellipse at 30% 70%, ${project.accent}28 0%, transparent 65%)`,
-                    }}
-                  />
-                  {/* Decorative shapes */}
-                  <div
-                    className="absolute -top-6 -right-6 w-28 h-28 rounded-full opacity-[0.12]"
-                    style={{ background: project.accent }}
-                  />
-                  <div
-                    className="absolute bottom-3 left-3 w-12 h-12 rounded-full opacity-[0.07]"
-                    style={{ background: project.accent }}
-                  />
-                  {/* Grid pattern */}
-                  <div
-                    className="absolute inset-0 opacity-[0.04]"
-                    style={{
-                      backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
-                      backgroundSize: '20px 20px',
-                    }}
-                  />
-                </div>
-
-                {/* Category badge */}
-                <div className="absolute top-3 left-3 z-10">
-                  <span
-                    className="px-2.5 py-1 text-[9px] tracking-widest uppercase"
-                    style={{
-                      background: `${project.accent}28`,
-                      color: project.accent,
-                      border: `1px solid ${project.accent}40`,
-                    }}
-                  >
-                    {project.category}
-                  </span>
-                </div>
-
-                <div className="absolute top-3 right-3 text-[#555] text-[10px] tracking-widest z-10">
-                  {project.year}
-                </div>
-
-                {/* Hover overlay */}
-                <div className="card-overlay z-20">
-                  <div className="w-11 h-11 rounded-full border border-white/40 flex items-center justify-center group-hover:border-[#D4A853] transition-colors duration-300">
-                    <svg className="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </div>
-                  <span className="text-white/60 text-[10px] tracking-widest uppercase">
-                    View Work
-                  </span>
-                </div>
+        {/* Timeline Detail Preview Box */}
+        <div className="reveal grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          {/* Detail Text Box */}
+          <div className="lg:col-span-7 border-2 border-white rounded-md bg-[#18181b] p-6 shadow-[4px_4px_0px_#ffffff] flex flex-col justify-between">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="px-2 py-0.5 border border-[#ff1e27] text-[#ff1e27] font-mono text-[9px] font-bold uppercase rounded-sm">
+                  {selectedProj.category}
+                </span>
+                <span className="font-mono text-xs text-white/50">{selectedProj.year} RELEASE</span>
               </div>
 
-              {/* Info */}
-              <div className="bg-[#111] p-4 border-b border-[#1f1f1f] group-hover:border-[#D4A853]/25 transition-colors duration-300">
-                <h3 className="text-[#DDD] text-[13px] font-semibold group-hover:text-[#D4A853] transition-colors duration-300 truncate">
-                  {project.title}
-                </h3>
-                <p className="text-[#484848] text-[11px] mt-1 leading-snug truncate">
-                  {project.desc}
-                </p>
-              </div>
-            </a>
-          ))}
-        </div>
+              <h3 className="font-black text-2xl uppercase tracking-tight text-white">
+                {selectedProj.title}
+              </h3>
 
-        {/* View more */}
-        <div className="text-center mt-12 reveal">
-          <a
-            href="https://www.youtube.com/@AshwinPadwalkar"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 border border-[#2a2a2a] text-[#555] px-8 py-4 text-[11px] tracking-[0.25em] uppercase hover:border-[#D4A853] hover:text-[#D4A853] transition-all duration-300"
-          >
-            View All Work on YouTube
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
+              <p className="text-zinc-400 text-sm leading-relaxed">
+                {selectedProj.desc}
+              </p>
+            </div>
+
+            <div className="mt-8 pt-6 border-t border-white/10 flex flex-wrap gap-4 items-center justify-between">
+              <div className="font-mono text-xs text-zinc-500">
+                <span className="block">CLIP DURATION</span>
+                <span className="font-bold text-white text-sm">{selectedProj.duration} MINS</span>
+              </div>
+
+              {/* YouTube Link CTA */}
+              <a
+                href="https://www.youtube.com/@AshwinPadwalkar"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="neo-btn flex items-center gap-2.5 px-6 py-3.5 text-xs font-bold tracking-widest uppercase"
+              >
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+                PLAY ON YOUTUBE
+              </a>
+            </div>
+          </div>
+
+          {/* Mini Monitor Preview (Stylized frame) */}
+          <div className="lg:col-span-5 border-2 border-white rounded-md bg-black shadow-[4px_4px_0px_#ff1e27] overflow-hidden flex flex-col justify-between p-4">
+            <div className="crt-screen relative flex-1 aspect-[4/3] bg-zinc-950 border border-white/10 flex items-center justify-center overflow-hidden">
+              <div className="crt-scanline-bar" />
+              
+              {/* Static overlay */}
+              <div 
+                className="absolute inset-0 opacity-[0.08] pointer-events-none"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`
+                }}
+              />
+
+              <div className="absolute top-2 left-2 text-[8px] font-mono bg-zinc-900 border border-white/20 text-[#ff1e27] px-1 rounded-sm uppercase font-bold">
+                PRVW MON
+              </div>
+
+              <div className="text-center p-4">
+                {/* Visual Camera lens look-alike */}
+                <div className="w-16 h-16 rounded-full border-4 border-dashed border-[#ff1e27] flex items-center justify-center mx-auto mb-3 animate-[spin-slow_20s_linear_infinite]">
+                  <div className="w-8 h-8 rounded-full bg-zinc-900 border-2 border-white" />
+                </div>
+                <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest block">
+                  READY TO STREAM
+                </span>
+                <span className="text-white text-xs font-black uppercase tracking-wider block mt-1">
+                  {selectedProj.title}
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-3 flex items-center justify-between font-mono text-[8px] text-zinc-600 px-1">
+              <span>PRVW RATE: 29.97 FPS</span>
+              <span className="text-[#ff1e27]">REC ACTIVE</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -23,6 +23,7 @@ export default function Contact() {
   const ref = useRef(null);
   const [form, setForm] = useState({ name: '', email: '', project: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [ticketNum, setTicketNum] = useState('');
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -36,6 +37,10 @@ export default function Contact() {
       { threshold: 0.1 }
     );
     if (ref.current) observer.observe(ref.current);
+    
+    // Generate a random ticket ID for the post slip
+    setTicketNum(`AP-TKT-${Math.floor(1000 + Math.random() * 9000)}`);
+
     return () => observer.disconnect();
   }, []);
 
@@ -47,100 +52,106 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" ref={ref} className="py-24 md:py-36 bg-[#080808]">
+    <section id="contact" ref={ref} className="py-24 md:py-36 bg-[#09090b] border-t-2 border-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         {/* Header */}
         <div className="text-center mb-20">
           <div className="flex items-center justify-center gap-4 mb-6 reveal">
-            <div className="w-8 h-px bg-[#D4A853]" />
-            <span className="text-[#D4A853] text-[11px] tracking-[0.5em] uppercase">Contact</span>
-            <div className="w-8 h-px bg-[#D4A853]" />
+            <div className="w-8 h-0.5 bg-[#ff1e27]" />
+            <span className="text-[#ff1e27] text-xs font-black tracking-[0.4em] uppercase">HANDOFF SLIP</span>
+            <div className="w-8 h-0.5 bg-[#ff1e27]" />
           </div>
           <h2
-            className="font-bold text-[#F0EDE8] leading-tight reveal"
+            className="font-black text-white leading-tight reveal uppercase"
             style={{
-              fontFamily: 'var(--font-playfair)',
+              fontFamily: 'var(--font-inter)',
               fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)',
             }}
           >
-            Let&apos;s Create <span className="text-gold-gradient">Together</span>
+            LET&apos;S CREATE <span className="text-[#ff1e27] underline decoration-white decoration-4 underline-offset-4">TOGETHER</span>
           </h2>
-          <p className="text-[#555] text-sm md:text-[15px] mt-4 reveal max-w-md mx-auto leading-relaxed">
-            Have a project in mind? I&apos;d love to hear about it and bring your vision to life.
+          <p className="text-zinc-500 font-mono text-xs mt-4 reveal max-w-md mx-auto leading-relaxed">
+            Submit a shoot request ticket below. Ashwin will review and respond in 24 frames.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-          {/* Info */}
-          <div className="reveal-left space-y-10">
-            <div>
-              <p className="text-[#444] text-[11px] tracking-[0.35em] uppercase mb-2">Email</p>
-              <a
-                href="mailto:ashwin.padwalkar.films@gmail.com"
-                className="text-[#E0DDD8] text-base md:text-lg hover:text-[#D4A853] transition-colors duration-300 break-all"
-              >
-                ashwin.padwalkar.films@gmail.com
-              </a>
-            </div>
-
-            <div>
-              <p className="text-[#444] text-[11px] tracking-[0.35em] uppercase mb-2">Based In</p>
-              <p className="text-[#E0DDD8] text-base">India</p>
-            </div>
-
-            <div>
-              <p className="text-[#444] text-[11px] tracking-[0.35em] uppercase mb-2">
-                Availability
-              </p>
-              <div className="flex items-center gap-2.5">
-                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <p className="text-[#E0DDD8] text-sm">Available for new projects</p>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-stretch">
+          {/* Info column */}
+          <div className="lg:col-span-5 reveal-left flex flex-col justify-between border-2 border-white rounded-md bg-[#18181b] p-6 shadow-[6px_6px_0px_#ff1e27]">
+            <div className="space-y-8 font-mono text-xs">
+              <div className="flex justify-between items-center pb-4 border-b border-white/10">
+                <span className="text-white/40 uppercase">MONITOR STAUS</span>
+                <span className="text-white font-black">{ticketNum}</span>
               </div>
-            </div>
 
-            <div className="w-full h-px bg-[#1a1a1a]" />
-
-            <div>
-              <p className="text-[#444] text-[11px] tracking-[0.35em] uppercase mb-5">
-                Follow My Work
-              </p>
-              <div className="flex gap-3">
-                {SOCIALS.map((s) => (
+              {/* Status checklist items */}
+              <div className="space-y-4">
+                <div>
+                  <span className="text-white/40 block uppercase text-[10px] mb-1">// ADDR: MAILBOX</span>
                   <a
-                    key={s.name}
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={s.name}
-                    className="w-10 h-10 border border-[#2a2a2a] flex items-center justify-center text-[#444] hover:border-[#D4A853] hover:text-[#D4A853] transition-all duration-300"
+                    href="mailto:ashwin.padwalkar.films@gmail.com"
+                    className="text-white text-sm font-bold hover:text-[#ff1e27] transition-colors break-all"
                   >
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                      <path d={s.path} />
-                    </svg>
+                    ashwin.padwalkar.films@gmail.com
                   </a>
-                ))}
+                </div>
+
+                <div>
+                  <span className="text-white/40 block uppercase text-[10px] mb-1">// LOC: LATITUDE</span>
+                  <p className="text-white text-sm font-bold">INDIA [GMT +5:30]</p>
+                </div>
+
+                <div>
+                  <span className="text-white/40 block uppercase text-[10px] mb-1">// LIVE: WORK STATUS</span>
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse border border-black" />
+                    <p className="text-white text-xs font-bold uppercase tracking-wider">AVAILABLE FOR PROJECTS</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full h-px bg-white/10" />
+
+              <div>
+                <span className="text-white/40 block uppercase text-[10px] mb-3">// CONNECT SYSTEM</span>
+                <div className="flex gap-3">
+                  {SOCIALS.map((s) => (
+                    <a
+                      key={s.name}
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={s.name}
+                      className="w-10 h-10 border-2 border-white flex items-center justify-center text-white bg-black hover:bg-[#ff1e27] hover:border-[#ff1e27] transition-all"
+                    >
+                      <svg className="w-4.5 h-4.5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d={s.path} />
+                      </svg>
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Quote */}
-            <div className="border-l-2 border-[#D4A853] pl-5">
-              <p className="text-[#555] text-sm italic leading-relaxed">
-                &ldquo;Every frame is a chance to tell a story. Let&apos;s make yours
-                unforgettable.&rdquo;
+            {/* Clapperboard slogan */}
+            <div className="border-l-4 border-[#ff1e27] pl-4 mt-8">
+              <p className="text-zinc-400 text-xs italic leading-relaxed">
+                &ldquo;Every shot is a calculated risk. Every frame is a narrative stamp. Let&apos;s ink yours.&rdquo;
               </p>
-              <p className="text-[#D4A853] text-[11px] tracking-widest uppercase mt-3">
-                — Ashwin Padwalkar
+              <p className="text-[#ff1e27] font-mono text-[9px] font-black uppercase tracking-widest mt-2">
+                — AP FILMS CREW
               </p>
             </div>
           </div>
 
-          {/* Form */}
-          <div className="reveal-right">
+          {/* Form column */}
+          <div className="lg:col-span-7 reveal-right flex flex-col justify-center border-2 border-white rounded-md bg-black p-6 shadow-[6px_6px_0px_#ffffff]">
             {submitted ? (
-              <div className="h-full border border-[#D4A853]/25 bg-[#D4A853]/[0.03] p-12 flex flex-col items-center justify-center gap-5 text-center">
-                <div className="w-12 h-12 border border-[#D4A853] flex items-center justify-center">
+              <div className="crt-screen relative p-8 text-center flex flex-col items-center justify-center gap-5 border border-white/20 bg-[#0c0c0e] min-h-[360px]">
+                <div className="crt-scanline-bar" />
+                <div className="w-14 h-14 border-2 border-[#ff1e27] flex items-center justify-center bg-black">
                   <svg
-                    className="w-6 h-6 text-[#D4A853]"
+                    className="w-8 h-8 text-[#ff1e27]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -148,51 +159,50 @@ export default function Contact() {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth={1.5}
+                      strokeWidth={2.5}
                       d="M5 13l4 4L19 7"
                     />
                   </svg>
                 </div>
                 <h3
-                  className="text-2xl text-[#F0EDE8]"
-                  style={{ fontFamily: 'var(--font-playfair)' }}
+                  className="text-xl font-black text-white uppercase tracking-wider"
                 >
-                  Message Sent!
+                  TICKET COMMITTED!
                 </h3>
-                <p className="text-[#555] text-sm leading-relaxed">
-                  Thank you for reaching out. I&apos;ll get back to you within 24 hours.
+                <p className="text-zinc-500 font-mono text-xs leading-relaxed max-w-sm">
+                  Your script request was loaded into queue {ticketNum}. Ashwin will get back to you shortly.
                 </p>
                 <button
                   onClick={() => { setSubmitted(false); setForm({ name: '', email: '', project: '', message: '' }); }}
-                  className="mt-2 text-[#D4A853] text-[11px] tracking-widest uppercase hover:underline"
+                  className="mt-4 neo-btn px-6 py-2.5 text-[10px] font-bold tracking-widest uppercase"
                 >
-                  Send Another Message
+                  RELOAD TICKET
                 </button>
               </div>
             ) : (
-              <form onSubmit={onSubmit} className="space-y-4">
+              <form onSubmit={onSubmit} className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[#444] text-[11px] tracking-[0.2em] uppercase mb-2">
-                      Name
+                    <label className="block text-white font-mono text-[10px] tracking-[0.15em] uppercase mb-2">
+                      SENDER NAME
                     </label>
                     <input
                       type="text"
                       required
-                      placeholder="Your name"
+                      placeholder="ENTER NAME"
                       value={form.name}
                       onChange={onChange('name')}
                       className="form-input"
                     />
                   </div>
                   <div>
-                    <label className="block text-[#444] text-[11px] tracking-[0.2em] uppercase mb-2">
-                      Email
+                    <label className="block text-white font-mono text-[10px] tracking-[0.15em] uppercase mb-2">
+                      SENDER EMAIL
                     </label>
                     <input
-                      type="email"
+                      type="type"
                       required
-                      placeholder="your@email.com"
+                      placeholder="YOUR@EMAIL.COM"
                       value={form.email}
                       onChange={onChange('email')}
                       className="form-input"
@@ -201,34 +211,34 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-[#444] text-[11px] tracking-[0.2em] uppercase mb-2">
-                    Project Type
+                  <label className="block text-white font-mono text-[10px] tracking-[0.15em] uppercase mb-2">
+                    PROJECT CATEGORY
                   </label>
                   <select
                     value={form.project}
                     onChange={onChange('project')}
                     className="form-input"
+                    required
                   >
-                    <option value="">Select a service...</option>
-                    <option value="cinematography">Cinematography</option>
-                    <option value="video-editing">Video Editing</option>
-                    <option value="motion-graphics">Motion Graphics</option>
-                    <option value="reels">Reels Creation</option>
-                    <option value="documentary">Documentary</option>
-                    <option value="podcast">Podcast Production</option>
-                    <option value="photography">Photography</option>
-                    <option value="other">Other</option>
+                    <option value="">CHOOSE SERVICE...</option>
+                    <option value="cinematography">CINEMATOGRAPHY</option>
+                    <option value="video-editing">VIDEO EDITING</option>
+                    <option value="motion-graphics">MOTION GRAPHICS</option>
+                    <option value="reels">REELS CREATION</option>
+                    <option value="documentary">DOCUMENTARY FILM</option>
+                    <option value="podcast">PODCAST PRODUCTION</option>
+                    <option value="other">OTHER MIX</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-[#444] text-[11px] tracking-[0.2em] uppercase mb-2">
-                    Message
+                  <label className="block text-white font-mono text-[10px] tracking-[0.15em] uppercase mb-2">
+                    PROJECT NOTES
                   </label>
                   <textarea
                     rows={5}
                     required
-                    placeholder="Tell me about your project..."
+                    placeholder="DESCRIBE STORY DETAILS..."
                     value={form.message}
                     onChange={onChange('message')}
                     className="form-input resize-none"
@@ -237,20 +247,10 @@ export default function Contact() {
 
                 <button
                   type="submit"
-                  className="w-full bg-[#D4A853] text-[#080808] py-4 text-[11px] tracking-[0.3em] uppercase font-semibold hover:bg-[#E8C07A] transition-colors duration-300"
+                  className="w-full neo-btn py-4 text-xs font-bold tracking-[0.25em] uppercase"
                 >
-                  Send Message
+                  TRANSMIT TICKET
                 </button>
-
-                <p className="text-[#3a3a3a] text-[11px] text-center pt-1">
-                  Or email directly:{' '}
-                  <a
-                    href="mailto:ashwin.padwalkar.films@gmail.com"
-                    className="text-[#D4A853]/70 hover:text-[#D4A853] transition-colors"
-                  >
-                    ashwin.padwalkar.films@gmail.com
-                  </a>
-                </p>
               </form>
             )}
           </div>

@@ -1,13 +1,13 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const SOFTWARE = [
-  { name: 'Adobe Premiere Pro', abbr: 'Pr', level: 95, color: '#9999FF' },
-  { name: 'Adobe After Effects', abbr: 'Ae', level: 88, color: '#9999FF' },
-  { name: 'DaVinci Resolve',     abbr: 'DR', level: 85, color: '#FF8A00' },
-  { name: 'Adobe Photoshop',     abbr: 'Ps', level: 82, color: '#31A8FF' },
-  { name: 'Adobe Lightroom',     abbr: 'Lr', level: 80, color: '#31A8FF' },
-  { name: 'Adobe Audition',      abbr: 'Au', level: 75, color: '#9999FF' },
+  { name: 'Adobe Premiere Pro', abbr: 'Pr', level: 95 },
+  { name: 'Adobe After Effects', abbr: 'Ae', level: 88 },
+  { name: 'DaVinci Resolve',     abbr: 'DR', level: 90 },
+  { name: 'Adobe Photoshop',     abbr: 'Ps', level: 80 },
+  { name: 'Adobe Lightroom',     abbr: 'Lr', level: 75 },
+  { name: 'Adobe Audition',      abbr: 'Au', level: 82 },
 ];
 
 const TAGS = [
@@ -17,14 +17,15 @@ const TAGS = [
 ];
 
 const PROCESS = [
-  { step: '01', title: 'Discovery',       desc: 'Understanding your vision, goals, and audience' },
-  { step: '02', title: 'Production',      desc: 'Filming, capturing and creating the raw content' },
-  { step: '03', title: 'Post-Production', desc: 'Editing, color grading, sound mix, and graphics' },
-  { step: '04', title: 'Delivery',        desc: 'Final export in required formats and handoff' },
+  { step: '01', title: 'DISCOVERY',       desc: 'Aligning on your vision, target audience, and project goals.' },
+  { step: '02', title: 'PRODUCTION',      desc: 'Lighting setup, high-res filming, and capturing raw footage.' },
+  { step: '03', title: 'POST-PROD',       desc: 'Precision cuts, color grading, sound design, and graphics.' },
+  { step: '04', title: 'DELIVERY',        desc: 'Exporting final cuts, rendering formats, and handoff.' },
 ];
 
 export default function Skills() {
-  const ref = useRef(null);
+  const sectionRef = useRef(null);
+  const [meterTrigger, setMeterTrigger] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -33,79 +34,97 @@ export default function Skills() {
         entry.target.querySelectorAll('.reveal').forEach((el, i) => {
           setTimeout(() => el.classList.add('visible'), i * 80);
         });
-        entry.target.querySelectorAll('.progress-bar').forEach((bar) => {
-          bar.style.width = `${bar.dataset.level}%`;
-        });
+        setMeterTrigger(true);
         observer.disconnect();
       },
-      { threshold: 0.15 }
+      { threshold: 0.1 }
     );
-    if (ref.current) observer.observe(ref.current);
+    if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
   return (
-    <section id="skills" ref={ref} className="py-24 md:py-36 bg-[#080808]">
+    <section id="skills" ref={sectionRef} className="py-24 md:py-36 bg-[#09090b] border-t-2 border-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         {/* Header */}
         <div className="flex items-center gap-4 mb-20 reveal">
-          <div className="w-8 h-px bg-[#D4A853]" />
-          <span className="text-[#D4A853] text-[11px] tracking-[0.5em] uppercase">Skills</span>
+          <div className="w-8 h-0.5 bg-[#ff1e27]" />
+          <span className="text-[#ff1e27] text-xs font-black tracking-[0.4em] uppercase">SKILL METERS</span>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-          {/* Software */}
+          {/* Software: LED VU Meters */}
           <div>
-            <h2
-              className="font-bold text-[#F0EDE8] leading-tight mb-10 reveal"
-              style={{
-                fontFamily: 'var(--font-playfair)',
-                fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)',
-              }}
-            >
-              Software <span className="text-gold-gradient">Mastery</span>
-            </h2>
+            <div className="flex items-baseline gap-2 mb-10 reveal">
+              <h2
+                className="font-black text-white leading-tight uppercase"
+                style={{
+                  fontFamily: 'var(--font-inter)',
+                  fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
+                }}
+              >
+                SOFTWARE MASTERY
+              </h2>
+              <span className="text-zinc-600 font-mono text-[10px] tracking-wider uppercase">[VU DB LEVEL]</span>
+            </div>
 
             <div className="space-y-6">
-              {SOFTWARE.map((s, i) => (
-                <div key={s.name} className={`reveal delay-${Math.min(i + 1, 6)}`}>
-                  <div className="flex justify-between items-center mb-2">
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="w-7 h-7 flex items-center justify-center text-[9px] font-bold tracking-wide flex-shrink-0"
-                        style={{
-                          background: `${s.color}18`,
-                          color: s.color,
-                          border: `1px solid ${s.color}40`,
-                        }}
-                      >
-                        {s.abbr}
+              {SOFTWARE.map((s, i) => {
+                // Calculate how many LED segments to fill (total of 10 segments)
+                const activeSegments = Math.round(s.level / 10);
+                
+                return (
+                  <div key={s.name} className={`reveal delay-${Math.min(i + 1, 6)}`}>
+                    <div className="flex justify-between items-center mb-2">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="w-7 h-7 flex items-center justify-center text-[9.5px] font-black tracking-wider flex-shrink-0 border border-white/20 bg-zinc-950 text-white"
+                        >
+                          {s.abbr}
+                        </div>
+                        <span className="text-white text-xs font-bold uppercase tracking-wider">{s.name}</span>
                       </div>
-                      <span className="text-[#BBB] text-[13px]">{s.name}</span>
+                      <span className="text-[#ff1e27] font-mono text-xs font-black">{s.level}%</span>
                     </div>
-                    <span className="text-[#D4A853] text-[12px]">{s.level}%</span>
+
+                    {/* Playful LED meter bar */}
+                    <div className="led-meter">
+                      {Array.from({ length: 10 }).map((_, idx) => {
+                        const isFilled = meterTrigger && idx < activeSegments;
+                        // First 7 channels are white, peak 3 channels are red
+                        const isRed = idx >= 7;
+                        
+                        return (
+                          <div
+                            key={idx}
+                            className={`led-segment transition-all duration-[600ms] ${
+                              isFilled
+                                ? isRed
+                                  ? 'active-red'
+                                  : 'active-white'
+                                : ''
+                            }`}
+                            style={{ transitionDelay: meterTrigger ? `${idx * 50}ms` : '0ms' }}
+                          />
+                        );
+                      })}
+                    </div>
                   </div>
-                  <div className="h-px bg-[#1f1f1f] relative overflow-hidden">
-                    <div
-                      className="progress-bar absolute left-0 top-0 h-full bg-[#D4A853]"
-                      data-level={s.level}
-                    />
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
-          {/* Right column */}
+          {/* Right column: Expertise & Filmstrip Process */}
           <div>
             <h2
-              className="font-bold text-[#F0EDE8] leading-tight mb-10 reveal"
+              className="font-black text-white leading-tight mb-10 reveal uppercase"
               style={{
-                fontFamily: 'var(--font-playfair)',
-                fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)',
+                fontFamily: 'var(--font-inter)',
+                fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
               }}
             >
-              Areas of <span className="text-gold-gradient">Expertise</span>
+              AREAS OF EXPERTISE
             </h2>
 
             {/* Tags */}
@@ -113,30 +132,45 @@ export default function Skills() {
               {TAGS.map((tag, i) => (
                 <span
                   key={tag}
-                  className={`reveal delay-${Math.min((i % 6) + 1, 6)} border border-[#1f1f1f] text-[#666] px-4 py-2 text-[11px] tracking-[0.15em] uppercase hover:border-[#D4A853]/40 hover:text-[#D4A853]/80 transition-all duration-300 cursor-default`}
+                  className={`reveal delay-${Math.min((i % 6) + 1, 6)} border-2 border-white text-white/90 px-4 py-2 text-[10px] font-bold tracking-widest uppercase hover:bg-[#ff1e27] hover:border-[#ff1e27] hover:shadow-[4px_4px_0px_#fff] transition-all cursor-none`}
                 >
                   {tag}
                 </span>
               ))}
             </div>
 
-            {/* Process */}
+            {/* Filmstrip Process */}
             <div>
-              <h3 className="text-[#F0EDE8] text-[11px] font-semibold tracking-[0.3em] uppercase mb-6 reveal">
-                My Process
-              </h3>
-              <div className="space-y-4">
+              <div className="flex items-center gap-2 mb-6 reveal">
+                <span className="text-[#ff1e27] font-black text-xs">//</span>
+                <h3 className="text-white text-xs font-black tracking-widest uppercase">
+                  PRODUCTION PROCESS
+                </h3>
+              </div>
+
+              {/* Visual Filmstrip cells */}
+              <div className="space-y-6 relative pl-6 border-l border-dashed border-white/20">
                 {PROCESS.map((p, i) => (
                   <div
                     key={p.step}
-                    className={`reveal delay-${i + 1} flex items-start gap-4 group`}
+                    className={`reveal delay-${i + 1} relative flex flex-col gap-2 group`}
                   >
-                    <div className="w-8 h-8 border border-[#D4A853]/25 flex items-center justify-center flex-shrink-0 group-hover:border-[#D4A853] group-hover:bg-[#D4A853]/8 transition-all duration-300">
-                      <span className="text-[#D4A853] text-[10px] font-bold">{p.step}</span>
+                    {/* Sprocket node */}
+                    <div className="absolute left-[-32px] top-1.5 w-4 h-4 bg-zinc-950 border-2 border-white text-[8px] font-black text-[#ff1e27] flex items-center justify-center rounded-sm z-10 group-hover:bg-[#ff1e27] group-hover:text-white transition-all">
+                      {p.step}
                     </div>
-                    <div>
-                      <p className="text-[#CCC] text-[13px] font-medium">{p.title}</p>
-                      <p className="text-[#4a4a4a] text-[12px] mt-0.5">{p.desc}</p>
+
+                    {/* Slate/Film frame style container */}
+                    <div className="border border-white/20 bg-zinc-900/30 p-4 rounded-md shadow-[4px_4px_0px_rgba(255,255,255,0.04)] group-hover:shadow-[4px_4px_0px_#ff1e27] group-hover:border-white transition-all">
+                      {/* Film sprocket representation on the frame edge */}
+                      <div className="flex gap-1.5 border-b border-white/10 pb-2 mb-2 justify-end opacity-20 group-hover:opacity-60 transition-opacity">
+                        <div className="w-1.5 h-1.5 border border-white rounded-sm bg-black" />
+                        <div className="w-1.5 h-1.5 border border-white rounded-sm bg-black" />
+                        <div className="w-1.5 h-1.5 border border-white rounded-sm bg-black" />
+                      </div>
+                      
+                      <p className="text-white text-xs font-black tracking-wider uppercase">{p.title}</p>
+                      <p className="text-zinc-500 text-xs mt-1 leading-relaxed">{p.desc}</p>
                     </div>
                   </div>
                 ))}

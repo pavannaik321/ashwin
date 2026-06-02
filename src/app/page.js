@@ -8,10 +8,12 @@ import Skills from "@/components/Skills";
 import Clients from "@/components/Clients";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import CustomCursor from "@/components/CustomCursor";
 
 export default function Home() {
   return (
     <div className="grain-overlay">
+      <CustomCursor />
       <Navbar />
       <main>
         <Hero />

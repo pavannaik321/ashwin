@@ -16,11 +16,16 @@ const CLIENTS = [
   'Content Kings',
 ];
 
-// Duplicate for seamless loop
-const TRACK = [...CLIENTS, ...CLIENTS];
+const FILTERS_REACTION = [
+  'PLAY', 'REC', 'CUT', 'EDIT', 'GRADE', 'SOUND', 'LIGHTS', 'CAMERA', 'ACTION', 'STORY'
+];
+
+// Duplicate for seamless loops
+const CLIENT_TRACK = [...CLIENTS, ...CLIENTS, ...CLIENTS];
+const REACTION_TRACK = [...FILTERS_REACTION, ...FILTERS_REACTION, ...FILTERS_REACTION];
 
 export default function Clients() {
-  const ref = useRef(null);
+  const sectionRef = useRef(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -31,36 +36,61 @@ export default function Clients() {
       },
       { threshold: 0.2 }
     );
-    if (ref.current) observer.observe(ref.current);
+    if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
   return (
-    <section ref={ref} className="py-20 bg-[#0d0d0d] border-t border-b border-[#1a1a1a] overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 mb-10">
+    <section ref={sectionRef} className="py-24 bg-[#09090b] border-t-2 border-white overflow-hidden select-none">
+      {/* Title */}
+      <div className="max-w-7xl mx-auto px-6 lg:px-10 mb-12">
         <div className="flex items-center gap-4 reveal">
-          <div className="w-6 h-px bg-[#D4A853]/50" />
-          <span className="text-[#D4A853] text-[11px] tracking-[0.5em] uppercase">Clients</span>
-          <div className="w-6 h-px bg-[#D4A853]/50" />
-          <span className="text-[#333] text-[11px] tracking-[0.35em] uppercase">
-            Trusted By Leading Brands
-          </span>
+          <div className="w-8 h-0.5 bg-[#ff1e27]" />
+          <span className="text-[#ff1e27] text-xs font-black tracking-[0.4em] uppercase">BRANDS</span>
+          <span className="text-zinc-600 font-mono text-[9px] tracking-wider uppercase hidden sm:inline">// TRUSTED PARTNERS</span>
         </div>
       </div>
 
-      <div className="marquee-container">
-        <div className="marquee-track">
-          {TRACK.map((client, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-6 px-8 flex-shrink-0"
-            >
-              <div className="w-1.5 h-1.5 rounded-full bg-[#D4A853]/30 flex-shrink-0" />
-              <span className="text-[#383838] text-[13px] tracking-[0.22em] uppercase font-light whitespace-nowrap hover:text-[#D4A853]/50 transition-colors duration-300">
-                {client}
-              </span>
-            </div>
-          ))}
+      {/* Marquee Rack: Double Stack */}
+      <div className="flex flex-col gap-4 relative">
+        {/* Ribbon 1: Left to Right Clients scrolling */}
+        <div className="marquee-container bg-[#ff1e27] text-white py-4 border-y-2 border-white shadow-[0px_4px_12px_rgba(255,30,39,0.15)] origin-center scale-[1.01] rotate-[-1.5deg] z-10">
+          <div className="marquee-track">
+            {CLIENT_TRACK.map((client, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-8 px-6 flex-shrink-0"
+              >
+                <span className="text-white font-mono text-[9px] tracking-widest font-black uppercase bg-black px-1.5 py-0.5 border border-white/20">
+                  REF-{String(i % 100).padStart(2, '0')}
+                </span>
+                <span className="text-white text-sm tracking-[0.25em] uppercase font-black whitespace-nowrap hover:text-black hover:scale-105 transition-all">
+                  {client}
+                </span>
+                <span className="text-black text-xs">★</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Ribbon 2: Right to Left Filmmaker verbs scrolling */}
+        <div className="marquee-container bg-black text-white py-3.5 border-y-2 border-[#ff1e27] rotate-[1.5deg] origin-center scale-[1.01] mt-[-10px] z-0">
+          <div className="marquee-track-reverse">
+            {REACTION_TRACK.map((word, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-10 px-6 flex-shrink-0"
+              >
+                <span
+                  className="text-transparent font-black tracking-[0.3em] uppercase text-sm whitespace-nowrap hover:text-[#ff1e27] transition-colors"
+                  style={{ WebkitTextStroke: '1px rgba(255,255,255,0.25)' }}
+                >
+                  {word}
+                </span>
+                <span className="text-[#ff1e27] text-[10px] font-mono">● REC</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
