@@ -3,28 +3,68 @@ import { useState, useEffect, useRef } from 'react';
 
 const CASSETTES = [
   {
-    id: 'reel-2024',
-    title: 'SHOWREEL 2024',
-    length: '02:14 MIN',
+    id: 'tu-mera-humsafar',
+    title: 'TU MERA HUMSAFAR',
+    length: '05:25 MIN',
     color: '#ff1e27',
     textColor: '#ffffff',
-    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-hands-adjusting-a-cinema-camera-lens-41544-large.mp4',
+    embedId: 'Rr7jI7fTHwo',
   },
   {
-    id: 'cinematography',
-    title: 'CINEMATOGRAPHY REEL',
-    length: '03:45 MIN',
+    id: 'woh-aayega',
+    title: 'WOH AAYEGA',
+    length: '03:44 MIN',
     color: '#ffffff',
     textColor: '#09090b',
-    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-cinematic-shot-of-a-misty-forest-during-sunset-41584-large.mp4',
+    embedId: 'AlClb7yHtuI',
   },
   {
-    id: 'commercials',
-    title: 'COMMERCIAL / SHORTS',
-    length: '01:30 MIN',
+    id: 'karwar-rasoi',
+    title: 'KARWAR RASOI S01 E01',
+    length: '07:25 MIN',
     color: '#18181b',
     textColor: '#ffffff',
-    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-background-1611-large.mp4',
+    embedId: 'BDDMxZYT5gs',
+  },
+  {
+    id: 'shree-legacy',
+    title: 'SHREE — LEGACY',
+    length: '04:12 MIN',
+    color: '#1a1a2e',
+    textColor: '#ffffff',
+    embedId: 'c4-shH12u1E',
+  },
+  {
+    id: 'yuva-utsav',
+    title: 'YUVA UTSAV 2022',
+    length: '01:44 MIN',
+    color: '#0f3460',
+    textColor: '#ffffff',
+    embedId: 'DoeZ7cpLvSY',
+  },
+  {
+    id: 'men-in-making-actor',
+    title: 'MEN IN MAKING — ACTOR',
+    length: '30:35 MIN',
+    color: '#1a2e1a',
+    textColor: '#ffffff',
+    embedId: 'xwzYOv7zzXI',
+  },
+  {
+    id: 'men-in-making-sports',
+    title: 'MEN IN MAKING — SPORTS',
+    length: '25:02 MIN',
+    color: '#0d2626',
+    textColor: '#ffffff',
+    embedId: 'yZz9Xg14aLs',
+  },
+  {
+    id: 'business-stories-podcast',
+    title: 'BUSINESS STORIES EP.01',
+    length: '01:25 HR',
+    color: '#2a1a0a',
+    textColor: '#ffffff',
+    embedId: '7cW0XoM0yms',
   },
 ];
 
@@ -98,7 +138,7 @@ export default function Showreel() {
         <div className="flex items-center justify-between mb-16 reveal">
           <div className="flex items-center gap-4">
             <div className="w-8 h-0.5 bg-[#ff1e27]" />
-            <span className="text-[#ff1e27] text-xs font-black tracking-[0.4em] uppercase">VCR DECK</span>
+            <span className="text-[#ff1e27] text-xs font-black tracking-[0.4em] uppercase">SELECTED CREATIVE WORK</span>
           </div>
           <span className="text-white/30 font-mono text-[10px] tracking-widest hidden md:inline">SYSTEM STATUS: ACTIVE</span>
         </div>
@@ -117,17 +157,16 @@ export default function Showreel() {
                 <div className="absolute inset-0 tv-static-bg opacity-[0.35] pointer-events-none animate-pulse" />
               )}
 
-              {/* Native HTML5 Video Player Display (Flawless local playback, no iframe blocks) */}
+              {/* YouTube Video Player Embed Display */}
               {selectedTape && isPlaying ? (
-                <video
-                  key={selectedTape.videoUrl}
-                  className="absolute inset-0 w-full h-full object-cover z-0"
-                  src={selectedTape.videoUrl}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                />
+                <iframe
+                  key={selectedTape.embedId}
+                  className="absolute inset-0 w-full h-full object-cover z-0 border-0"
+                  src={`https://www.youtube.com/embed/${selectedTape.embedId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${selectedTape.embedId}&showinfo=0&rel=0&iv_load_policy=3`}
+                  title={selectedTape.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
               ) : null}
 
               {/* Screen HUD Overlay */}
