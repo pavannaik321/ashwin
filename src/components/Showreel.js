@@ -8,7 +8,7 @@ const CASSETTES = [
     length: '02:14 MIN',
     color: '#ff1e27',
     textColor: '#ffffff',
-    embedId: '9wcrzR4C-js', // Cinematic video ID
+    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-hands-adjusting-a-cinema-camera-lens-41544-large.mp4',
   },
   {
     id: 'cinematography',
@@ -16,7 +16,7 @@ const CASSETTES = [
     length: '03:45 MIN',
     color: '#ffffff',
     textColor: '#09090b',
-    embedId: '4yW4o9J6_B0', // Documentary cinematography
+    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-cinematic-shot-of-a-misty-forest-during-sunset-41584-large.mp4',
   },
   {
     id: 'commercials',
@@ -24,22 +24,22 @@ const CASSETTES = [
     length: '01:30 MIN',
     color: '#18181b',
     textColor: '#ffffff',
-    embedId: 'uD2g6g23x0o', // Commercial editing
+    videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-background-1611-large.mp4',
   },
 ];
 
 export default function Showreel() {
   const sectionRef = useRef(null);
-  const [selectedTape, setSelectedTape] = useState(null); // null means no tape inserted
+  const [selectedTape, setSelectedTape] = useState(CASSETTES[0]); // first tape by default
   const [isInserting, setIsInserting] = useState(false);
   const [glitching, setGlitching] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true); // playing by default
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
-        entry.target.querySelectorAll('.reveal').forEach((el) => el.classList.add('visible'));
+        entry.target.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach((el) => el.classList.add('visible'));
         observer.disconnect();
       },
       { threshold: 0.1 }
@@ -114,23 +114,20 @@ export default function Showreel() {
               
               {/* TV Static Noise when no tape */}
               {!selectedTape && !isInserting && (
-                <div 
-                  className="absolute inset-0 opacity-[0.15] bg-repeat pointer-events-none"
-                  style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`
-                  }}
-                />
+                <div className="absolute inset-0 tv-static-bg opacity-[0.35] pointer-events-none animate-pulse" />
               )}
 
-              {/* Video Player Display */}
+              {/* Native HTML5 Video Player Display (Flawless local playback, no iframe blocks) */}
               {selectedTape && isPlaying ? (
-                <iframe
-                  className="w-full h-full relative z-0"
-                  src={`https://www.youtube.com/embed/${selectedTape.embedId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${selectedTape.embedId}`}
-                  title={selectedTape.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
+                <video
+                  key={selectedTape.videoUrl}
+                  className="absolute inset-0 w-full h-full object-cover z-0"
+                  src={selectedTape.videoUrl}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                />
               ) : null}
 
               {/* Screen HUD Overlay */}
@@ -181,12 +178,15 @@ export default function Showreel() {
                 </div>
               </div>
 
-              {/* Big Text instructions if screen is empty */}
+              {/* Flashing "NO SIGNAL" alert and action text if screen is empty */}
               {!selectedTape && !isInserting && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-black/40">
-                  <span className="text-white font-mono text-[9px] tracking-[0.3em] uppercase opacity-40 mb-3">// MONITOR STANDBY //</span>
-                  <p className="text-white font-black text-xs md:text-sm tracking-widest uppercase bg-zinc-900 border border-white/20 px-4 py-2 hover:bg-[#ff1e27] hover:border-white transition-colors cursor-none pointer-events-auto" style={{ cursor: 'none' }}>
-                    SELECT A TAPE TO RUN REEL
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-black/50 z-20">
+                  <div className="absolute top-3 right-3 bg-[#ff1e27] text-white px-2.5 py-1 font-mono text-[8px] font-black uppercase tracking-widest animate-pulse border border-white">
+                    NO SIGNAL
+                  </div>
+                  <span className="text-white font-mono text-[9px] tracking-[0.3em] uppercase opacity-50 mb-2">// MONITOR STANDBY //</span>
+                  <p className="text-white font-black text-xs tracking-widest uppercase bg-[#ff1e27] border border-white px-4 py-2 hover:bg-white hover:text-[#ff1e27] transition-colors cursor-none pointer-events-auto" style={{ cursor: 'none' }}>
+                    CHOOSE CASSETTE FROM RACK
                   </p>
                 </div>
               )}
